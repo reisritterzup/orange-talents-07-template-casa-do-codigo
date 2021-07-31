@@ -1,31 +1,25 @@
-package br.com.zup.gabriel.casadocodigo.model;
+package br.com.zup.gabriel.casadocodigo.dto;
 
+import br.com.zup.gabriel.casadocodigo.model.Autor;
 import br.com.zup.gabriel.casadocodigo.validacao.ExistsId;
+import br.com.zup.gabriel.casadocodigo.validacao.UniqueValue;
 import org.hibernate.validator.constraints.Length;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Lob;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 
-@Entity
-@Table(name = "Autor")
-public class Autor {
+public class AutorRequestDto {
 
-    public Autor(){}
+    public AutorRequestDto(){}
 
-    public Autor(String nome, String email, String descricao) {
+    public AutorRequestDto(String nome, String email, String descricao) {
         this.nome = nome;
         this.email = email;
         this.descricao = descricao;
     }
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
     @NotNull
     @NotEmpty
@@ -34,15 +28,16 @@ public class Autor {
     @NotNull
     @NotEmpty
     @Email(message = "Email inválido!")
-    @Column(unique = true)
+    @UniqueValue(domainClass = Autor.class,fieldName = "email")
     private String email;
 
     @Length(max = 400)
     @Lob
     private String descricao;
 
-    @NotNull
-    private LocalDateTime dataCadastro = LocalDateTime.now();
+    public Autor toModel(){
+        return new Autor(this.nome,this.email,this.descricao);
+    }
 
     public String getNome() {
         return nome;
@@ -55,6 +50,4 @@ public class Autor {
     public String getDescricao() {
         return descricao;
     }
-
-
 }
