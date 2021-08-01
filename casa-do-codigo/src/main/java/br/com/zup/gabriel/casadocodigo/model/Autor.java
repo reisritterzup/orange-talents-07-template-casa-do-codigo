@@ -44,6 +44,8 @@ public class Autor {
     @NotNull
     private LocalDateTime dataCadastro = LocalDateTime.now();
 
+    public Long getId(){return id;}
+
     public String getNome() {
         return nome;
     }
