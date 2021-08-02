@@ -16,6 +16,11 @@ public class Pais {
         this.nome = nome;
     }
 
+    public Pais(String nome, List<Estado> estadoList) {
+        this.nome = nome;
+        this.estadoList = estadoList;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,7 +29,7 @@ public class Pais {
     @Column(nullable = false,unique = true)
     private String nome;
 
-    @OneToMany
+    @OneToMany(mappedBy = "pais")
     private List<Estado> estadoList;
 
     public Long getId() {
